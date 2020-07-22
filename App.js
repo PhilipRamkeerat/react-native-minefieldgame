@@ -18,6 +18,11 @@ class App extends Component {
                   {params.getRowsAmount()}x{params.getRowsAmount()}
           </Text>
           <Field></Field>
+          <Field opened></Field>
+          <Field opened nearMines={1}></Field>
+          <Field opened nearMines={2}></Field>
+          <Field opened nearMines={3}></Field>
+          <Field opened nearMines={6}></Field>
         </SafeAreaView>
       </>
     );
