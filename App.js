@@ -8,13 +8,16 @@ import {
 } from 'react-native';
 import params from './src/params'
 import MineField from './src/components/MineField'
+import Header from './src/components/Header'
 import {
   createMinedBoard,
   cloneBoard,
   openField,
   hadExplosion,
   wonGame,
-  showMines
+  showMines,
+  invertFlag,
+  flagsUsed
 } from './src/functions'
 
 export default class App extends Component {
@@ -58,19 +61,30 @@ export default class App extends Component {
     this.setState({ board, lost, won })
   }
 
+  onSelectField = (row, column) => {
+    const board = cloneBoard(this.state.board)
+    invertFlag(board, row, column)
+    const won = wonGame(board)
+
+    if (won) {
+      Alert.alert('Parabens', 'voce venceu !')
+    }
+
+    this.setState({ board, won })
+  }
+
 
 
   render() {
     return (
       <>
         <SafeAreaView style={styles.container}>
-          <Text style={styles.welcome}>Mines!</Text>
-          <Text style={styles.instructions}>Tamanho da grade:
-                  {params.getRowsAmount()}x{params.getRowsAmount()}
-          </Text>
+          <Header flagsLeft={this.minesAmount() - flagsUsed(this.state.board)}
+            onNewGame={() => this.setState(this.createState())}></Header>
           <View style={styles.board}>
             <MineField board={this.state.board}
-              onOpenField={this.onOpenField}></MineField>
+              onOpenField={this.onOpenField}
+              onSelectField={this.onSelectField}></MineField>
           </View>
         </SafeAreaView>
       </>
